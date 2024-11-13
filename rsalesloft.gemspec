@@ -3,7 +3,7 @@ $:.push File.expand_path('../lib', __FILE__)
 require 'rsalesloft'
 
 Gem::Specification.new do |s|
-  s.name = "rsalesloft"
+  s.name = "atob-rsalesloft"
   s.version = RSalesloft::VERSION
   s.authors = ["Auree Aubert"]
   s.email = "contact@auree.me"
