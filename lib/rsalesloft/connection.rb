@@ -6,24 +6,39 @@ module RSalesloft
   class Connection 
     class << self
       def get(path, options = {})
-        connection.get(
-          path, options
-        ).body
+        res = connection.get(path, options)
+        {
+          body: res.body,
+          headers: res.headers
+        }
       end
     
       def post(path, req_body)
-        connection.post do |req|
+        res = connection.post do |req|
           req.url(path)
           req.body = req_body
-        end.body
+        end
+
+        {
+          body: res.body,
+          headers: res.headers
+        }
       end
     
       def put(path, options = {})
-        connection.put(path, options).body
+        res = connection.put(path, options)
+        {
+          body: res.body,
+          headers: res.headers
+        }
       end
     
       def delete(path, options = {})
-        connection.delete(options).body
+        res = connection.delete(path, options)
+        {
+          body: res.body,
+          headers: res.headers
+        }
       end
 
       private
