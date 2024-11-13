@@ -35,7 +35,9 @@ module RSalesloft
       end
 
       def remaining_credits
-        redis_pool.with { |conn| (conn.get(redis_key_for_remaining_credits) || max_credits).to_i }
+        redis_pool.with do |conn|
+          (conn.get(redis_key_for_remaining_credits) || max_credits).to_i
+        end
       end
 
       private
@@ -47,12 +49,18 @@ module RSalesloft
           conn.set(redis_key_for_remaining_credits, headers["x-ratelimit-remaining-minute"], ex: 65)
   
           # The max credits are more stable, only refresh once every day
-          conn.set(RSalesloft::Config.redis_key_for_max_credits, headers["x-ratelimit-limit-minute"] || 600, ex: 1.day.to_i)
+          conn.set(
+            RSalesloft::Config.redis_key_for_max_credits,
+            headers["x-ratelimit-limit-minute"] || RSalesloft::Config.max_credits_per_minute,
+            ex: 1.day.to_i
+          )
         end
       end
 
       def max_credits
-        redis_pool.with { |conn| (conn.get(RSalesloft::Config.redis_key_for_max_credits) || 600).to_i }
+        redis_pool.with do |conn|
+          (conn.get(RSalesloft::Config.redis_key_for_max_credits) || RSalesloft::Config.max_credits_per_minute).to_i
+        end
       end
 
       def redis_pool
