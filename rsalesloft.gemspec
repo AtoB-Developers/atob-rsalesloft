@@ -1,6 +1,8 @@
 # encoding: utf-8
-$:.push File.expand_path('../lib', __FILE__)
-require 'rsalesloft'
+lib = File.expand_path("../lib", __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+
+require 'rsalesloft/version'
 
 Gem::Specification.new do |s|
   s.name = "atob-rsalesloft"
