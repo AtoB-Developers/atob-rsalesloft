@@ -21,6 +21,10 @@ module RSalesloft::Resources
         RSalesloft::Connection.put(accounts_path(id), options)
       end
 
+      def bulk_delete(ids)
+        RSalesloft::Connection.post("bulk_delete_accounts", {ids: ids}) # undocumented but used by their frontend
+      end
+
       private 
 
       def accounts_path(id = nil)
